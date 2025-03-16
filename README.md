@@ -7,6 +7,7 @@ Este proyecto es una aplicación en Python diseñada para modificar las frecuenc
 Los subtonos y squelch son globales para todos los canales.
 
 ## Requisitos Previos
+
 Antes de ejecutar la aplicación, asegúrese de tener instalado:
 - **Python 3**
 - **pyserial** (puede instalarlo con `pip install pyserial`)
