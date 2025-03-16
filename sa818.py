@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import argparse
-import serial # type: ignore
+import serial  # type: ignore
 import time
 import re
 
@@ -132,7 +132,7 @@ def main():
     parser.add_argument("--sql", type=validate_squelch, help="Squelch (formato x)")
     args = parser.parse_args()
 
-    # Si se proporciona --fr, se asigna la misma frecuencia para TX y RX, sobreescribiendo si existían otros valores
+    # Si se proporciona --fr, se asigna la misma frecuencia para TX y RX
     if args.fr:
         args.tx = args.fr
         args.rx = args.fr
@@ -143,7 +143,7 @@ def main():
         print("Error abriendo el puerto serie:", e)
         return
 
-    # Sin canal, se muestra información del módulo
+    # Si no se especifica el canal, mostrar información del módulo y salir
     if args.ch is None:
         info = get_module_info(ser)
         print("Información del módulo:", info)
@@ -152,7 +152,7 @@ def main():
 
     # Se obtiene la configuración programada
     data_list = get_programmed_data(ser)
-    # Se espera recibir 35 valores: 32 para las frecuencias (16 canales TX y RX) + 3 (subtono TX, subtono RX y squelch)
+    # Se espera recibir 35 valores: 32 para frecuencias (16 canales TX y RX) + 3 (subtono TX, subtono RX y squelch)
     if len(data_list) < 35:
         print("Error: datos programados incompletos recibidos:", data_list)
         ser.close()
@@ -168,49 +168,48 @@ def main():
     tx_index = 2 * (channel - 1)
     rx_index = tx_index + 1
 
-    current_tx = data_list[tx_index]
-    current_rx = data_list[rx_index]
-    tone_tx = data_list[32]   # Subtono TX
-    tone_rx = data_list[33]   # Subtono RX
-    squelch = data_list[34]
+    # Si se han pasado parámetros de modificación, aplicar cambios y mostrar la nueva configuración que se guardará.
+    if args.tx or args.rx or args.st or args.stx or args.srx or args.sql:
+        if args.tx:
+            data_list[tx_index] = args.tx
+        if args.rx:
+            data_list[rx_index] = args.rx
+        if args.st:
+            data_list[32] = args.st
+            data_list[33] = args.st
+        if args.stx:
+            data_list[32] = args.stx
+        if args.srx:
+            data_list[33] = args.srx
+        if args.sql:
+            data_list[34] = args.sql
 
-    # Mostrar la configuración actual del canal
-    print(f"Canal {channel}:")
-    print(f"  TX: {current_tx}")
-    print(f"  RX: {current_rx}")
-    print(f"  Subtono TX: {tone_tx}")
-    print(f"  Subtono RX: {tone_rx}")
-    print(f"  Squelch: {squelch}")
+        print("Se guardarán los siguientes parámetros:")
+        print(f"Canal {channel}:")
+        print(f"  TX: {data_list[tx_index]}")
+        print(f"  RX: {data_list[rx_index]}")
+        print(f"  Subtono TX: {data_list[32]}")
+        print(f"  Subtono RX: {data_list[33]}")
+        print(f"  Squelch: {data_list[34]}")
+    else:
+        # Si no se pasan modificaciones, se muestra la configuración actual
+        print("Configuración actual del canal:")
+        print(f"Canal {channel}:")
+        print(f"  TX: {data_list[tx_index]}")
+        print(f"  RX: {data_list[rx_index]}")
+        print(f"  Subtono TX: {data_list[32]}")
+        print(f"  Subtono RX: {data_list[33]}")
+        print(f"  Squelch: {data_list[34]}")
+        ser.close()
+        return
 
-    # Se actualiza la configuración si se proporcionaron parámetros de modificación
-    modified = False
-    if args.tx:
-        data_list[tx_index] = args.tx
-        modified = True
-    if args.rx:
-        data_list[rx_index] = args.rx
-        modified = True
-    if args.st:
-        data_list[32] = args.st
-        data_list[33] = args.st
-        modified = True
-    if args.stx:
-        data_list[32] = args.stx
-        modified = True
-    if args.srx:
-        data_list[33] = args.srx
-        modified = True
-    if args.sql:
-        data_list[34] = args.sql
-        modified = True
-
-    if modified:
-        confirm = input("¿Desea actualizar la configuración en el módulo? (s/n): ")
-        if confirm.lower() == 's':
-            response = update_programmed_data(ser, data_list)
-            print("Respuesta del módulo:", response)
-        else:
-            print("Actualización cancelada.")
+    # Confirmación de actualización
+    confirm = input("¿Desea actualizar la configuración en el módulo? (s/n): ")
+    if confirm.lower() == 's':
+        response = update_programmed_data(ser, data_list)
+        print("Respuesta del módulo:", response)
+    else:
+        print("Actualización cancelada.")
 
     ser.close()
 
