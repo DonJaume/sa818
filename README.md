@@ -101,6 +101,7 @@ Al ejecutar el script con parámetros de modificación, se mostrará la configur
 
 
 - **Digitales:**
+
 |Data - Tono|Data - Tono|Data - Tono|Data - Tono|Data - Tono|Data - Tono|Data - Tono|
 |----------|----------|----------|----------|----------|----------|----------|
 | 039 - 023I | 063 - 156I | 087 - 365I | 111 -654I | 135 - 074N | 159 - 263N | 183 - 506N |
