@@ -1,6 +1,6 @@
 # Configuración del Módulo Wakie Talkie SA818
 
-![Imagen del Módulo](https://github.com/DonJaume/sa818/blob/main/sa818.jpg?raw=true)
+![Imagen del Módulo](https://github.com/ea6ami/sa818/blob/main/sa1818.jpg?raw=true)
 
 Este proyecto es una aplicación en Python diseñada para modificar las frecuencias del módulo Wakie Talkie SA818, de la casa G-NiceRF, mediante conexión serie. Además de permitir consultar la información del módulo (nombre y modelo), también posibilita visualizar y actualizar la configuración de los canales (1-16) modificando las frecuencias, subtonos y el squelch.
 
