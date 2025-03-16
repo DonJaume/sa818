@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import argparse
-import serial
+import serial # type: ignore
 import time
 import re
 
