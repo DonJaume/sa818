@@ -18,7 +18,7 @@ Antes de ejecutar la aplicación, asegúrese de tener instalado:
 La aplicación se conecta al módulo mediante un puerto serie (por defecto `/dev/serial0`) y ofrece dos modos de operación:
 
 1. **Visualización de Información del Módulo:**  
-   Al ejecutar el script sin parámetros, se obtiene el nombre y modelo del módulo.
+   Al ejecutar el script sin parámetros, se obtiene el nombre y modelo del módulo. Útil para comprobar el correcto funcionamiento y conexión.
 
 2. **Consulta y Modificación de la Configuración de un Canal:**  
    Al especificar el número de canal (entre 1 y 16) mediante el parámetro `--ch`, se muestra la configuración actual, la cual incluye:
